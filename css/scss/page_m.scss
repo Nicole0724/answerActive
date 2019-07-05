@@ -1,0 +1,169 @@
+#login_body, #qa_body {
+
+}
+
+#login, #qa {
+  background: url("../assets/mobile_img/BG_login.jpg") bottom center #edf3f3 no-repeat;
+  width: 100%;
+  //min-height: 63rem;
+  //max-height: 80rem;
+  height: 100%;
+  overflow: hidden;
+
+  .header {
+    padding: 2.4rem 2.0rem 0;
+    .text-left {
+      img {
+        width: 10rem;
+      }
+    }
+    .text-right {
+      img {
+        width: 10rem;
+      }
+    }
+  }
+  .logo {
+    margin-top: 4rem;
+    text-align: center;
+    img {
+      width: 32.7rem;
+    }
+  }
+  .input-group {
+    padding: 6.5rem 3.3rem 0;
+    .input-owner {
+      border: 1px solid #d81d16;
+      border-radius: 6px;
+      height: 4rem;
+      margin-bottom: 2rem;
+      .lable-title {
+        height: 4rem;
+        line-height: 4rem;
+        text-align: center;
+        font-size: 2rem;
+        padding: 0 !important;
+        background: #d81d16;
+        border-top-left-radius: 4px;
+        border-bottom-left-radius: 4px;
+        border-top-right-radius: 6px;
+        border-bottom-right-radius: 6px;
+        color: #ffffff;
+      }
+      .input-text {
+        position: relative;
+        width: 20rem;
+        input {
+          position: absolute;
+          top: 0;
+          left: 0;
+          font-size: 1.6rem;
+          text-indent: 1rem;
+          height: 3.8rem;
+          width: 19rem;
+          outline: none;
+          border: none;
+          background-color: transparent;
+        }
+      }
+    }
+  }
+  .btn-box {
+    .btn-save {
+      //height: 2rem;
+      width: 6rem;
+      margin: 5rem auto;
+      font-size: 1.6rem;
+      color: #ffffff;
+      background: #d81d16;
+      border-radius: 6px;
+      text-align: center;
+      padding: 4px;
+    }
+
+  }
+
+}
+
+#qa_body {
+  .qa-title {
+    padding-top: 6rem;
+    font-size: 3rem;
+    color: #d81d16;
+    text-align: center;
+    font-weight: 800;
+  }
+  .qa-q {
+    padding: 2rem 2.4rem 0;
+    .qa-q-title {
+      color: #000000;
+      font-weight: 800;
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+    }
+    .qa-ans-item {
+      font-weight: 800;
+      font-size: 1.4rem;
+      padding: 6px;
+      margin-bottom: 10px;
+      border-radius: 4px;
+    }
+    .color-pink {
+      background-color: #E6CFD0;
+    }
+    .color-true {
+      color: #ffffff;
+      background: linear-gradient(90deg, rgba(162, 173, 34, 1), rgba(3, 132, 7, 1));
+    }
+    .color-false {
+      color: #ffffff;
+      background: linear-gradient(90deg, rgba(230, 48, 62, 1), rgba(236, 71, 3, 1));
+    }
+  }
+}
+
+.mask {
+  position: fixed;
+  width: 37.5rem;
+  height: 60.3rem;
+  background-color: rgba(0, 0, 0, 0.6);
+  top: 0;
+  left: 0;
+  .alert {
+    position: relative;
+    margin: 0 auto;
+    top: 12rem;
+    width: 29rem;
+    height: 26.5rem;
+    background-image: url("../assets/mobile_img/alert_bg.png");
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-position: center center;
+    .alert-body {
+      padding-top: 13rem;
+      padding-bottom: 2rem;
+      p {
+        text-align: center;
+        font-size: 1.6rem;
+        color: #151515;
+        font-weight: 800;
+      }
+    }
+    .alert-btn {
+      height: 4.65rem;
+      font-size: 1.8rem;
+      text-align: center;
+      color: #ffffff;
+      line-height: 4.65rem;
+      border-bottom-left-radius: 6px;
+      border-bottom-right-radius: 6px;
+    }
+    .alert-next {
+      background: linear-gradient(90deg, rgba(230, 48, 62, 1), rgba(236, 71, 3, 1));
+    }
+    .alert-end {
+      background: #ADACAC;
+    }
+  }
+
+}

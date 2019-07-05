@@ -1,0 +1,1 @@
+$(function(){var f;offWidth=$(window).width(),offWidth>750&&(offWidth=750),f=(20*(f=offWidth/750)).toFixed(0),offWidth<=768&&$("html").css("font-size",f+"px")});

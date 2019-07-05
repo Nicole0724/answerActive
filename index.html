@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>西安杨森</title>
+    <!--监控如果用ie打开强制使用ie的兼容模式-->
+    <meta http-equiv="X-UA-COMPATIBLE" content="IE=edge"/>
+    <meta name="keywords" content="西安杨森">
+    <!--当屏幕缩放的时候按照1比1缩放-->
+    <!--<meta name="viewport" content="width=device-width,initial-scale=1" />-->
+    <!--<link rel="shortcut icon" href="../favicon.ico" type="image/x-icon" />-->
+</head>
+<body id="qa_body">
+<div id="qa">
+    <div class="header row">
+        <div col-6 class="text-left">
+            <img src="assets/mobile_img/logo_left.png">
+        </div>
+        <div col-6 class="text-right">
+            <img src="assets/mobile_img/logo_right.png">
+        </div>
+    </div>
+    <div class="logo">
+        <img src="assets/mobile_img/logo.png">
+    </div>
+    <div class="input-group">
+        <div class="input-owner row">
+            <div class="lable-title" col-4 align-self-center>姓名</div>
+            <div class="input-text" col-8 align-self-center>
+                <input type="text" placeholder="点击输入">
+            </div>
+        </div>
+        <div class="input-owner row">
+            <div class="lable-title" col-4 align-self-center>所在药店</div>
+            <div class="input-text" col-8 align-self-center>
+                <input type="text" placeholder="点击输入">
+            </div>
+        </div>
+        <div class="btn-box">
+            <div class="btn-save">提交</div>
+        </div>
+    </div>
+</div>
+</body>
+
+<script>
+    new Vue({
+        el: '#login',
+        data: {
+            name: "宁"
+        }
+    })
+</script>
+</html>

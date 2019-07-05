@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>西安杨森</title>
+    <!--监控如果用ie打开强制使用ie的兼容模式-->
+    <meta http-equiv="X-UA-COMPATIBLE" content="IE=edge"/>
+    <meta name="keywords" content="西安杨森">
+    <!--<link rel="shortcut icon" href="../favicon.ico" type="image/x-icon" />-->
+    <!--当屏幕缩放的时候按照1比1缩放-->
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <!--<meta http-equiv="Cache-Control" content="max-age=7200"/>-->
+    <!--<meta http-equiv="Expires" content="Mon, 20 Jul 2020 23:00:00 GMT"/>-->
+    <meta name="format-detection" content="telephone=no"/>
+    <!--ios5的safari浏览器的电话号码识别功能的禁用-->
+
+    <link rel="stylesheet" type="text/css" href="../css/common.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/page_m.css"/>
+
+    <script type="text/javascript" src="../plugin/jquery-1.11.3.js"></script>
+    <script type="text/javascript" src="../plugin/sixty_utils_browser.js"></script>
+    <script type="text/javascript" src="../plugin/reset_fontsize_m.js"></script>
+    <script src="../plugin/Vue.js"></script>
+</head>
+<body>
+<body id="qa_body">
+<div id="qa">
+    <div class="header row">
+        <div col-6 class="text-left">
+            <img src="../assets/mobile_img/logo_left.png">
+        </div>
+        <div col-6 class="text-right">
+            <img src="../assets/mobile_img/logo_right.png">
+        </div>
+    </div>
+    <div class="qa-title"> 第一题(单选)</div>
+    <div class="qa-q">
+        <div class="qa-q-title">
+            雷诺考特的酯化作用以下说法正确的是
+        </div>
+        <div class="qa-ans-item color-true">A. 布地奈德在细胞中并非一次性全部结合受体而是部分转化为无活性布地奈德酯化物</div>
+        <div class="qa-ans-item color-pink">B. 药物在鼻腔滞留的时间长</div>
+        <div class="qa-ans-item color-pink">C. 持续抑制炎症反应</div>
+        <div class="qa-ans-item color-false">D. 以上说法均正确</div>
+    </div>
+    <div class="btn-box">
+        <div class="btn-save">提交</div>
+    </div>
+</div>
+<div class="mask">
+    <div class="alert">
+        <div class="alert-body">
+            <p class="p1"> 恭喜您答对了！</p>
+            <p class="p1">目前您的积分为：50 分</p>
+            <p class="p1"> 目前您的排名为：14 名 </p>
+        </div>
+        <!--<div class="alert-btn alert-next">下一题</div>-->
+        <div class="alert-btn alert-end">结束答题</div>
+    </div>
+</div>
+</body>
+
+<script>
+    new Vue({
+        el: '#qa',
+        data: {
+            name: "宁"
+        }
+    })
+</script>
+</html>

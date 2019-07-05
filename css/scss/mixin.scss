@@ -1,0 +1,92 @@
+
+@mixin bis($url) {
+    background-image: url($url);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+
+@mixin borderRadius($radius) {
+    -webkit-border-radius: $radius;
+    -moz-border-radius: $radius;
+    -ms-border-radius: $radius;
+    -o-border-radius: $radius;
+    border-radius: $radius;
+}
+@mixin placeholder($color,$fontSize) {
+    -webkit-border-radius: $radius;
+    -moz-border-radius: $radius;
+    -ms-border-radius: $radius;
+    -o-border-radius: $radius;
+    border-radius: $radius;
+}
+
+@mixin allcover {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+
+@mixin center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
+@mixin cl {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+
+@mixin plt ($left, $top) {
+    position: absolute;
+    left: $left;
+    top: $top;
+}
+
+
+@mixin wh($width, $height) {
+    width: $width;
+    height: $height;
+}
+
+
+@mixin hl($height, $line-height) {
+    height: $height;
+    line-height: $line-height;
+}
+
+
+@mixin whl($width, $height, $line-height) {
+    width: $width;
+    height: $height;
+    line-height: $line-height;
+}
+
+
+@mixin font($size, $line-height, $family: 'Microsoft YaHei') {
+    font: #{$size}/#{$line-height} $family;
+}
+
+
+@mixin sc($size, $color) {
+    font-size: $size;
+    color: $color;
+}
+
+
+@mixin scl($size, $color, $letter-spacing) {
+    font-size: $size;
+    color: $color;
+    letter-spacing: $letter-spacing;
+}
+
+
+@mixin fj($type: space-between) {
+    display: flex;
+    justify-content: $type;
+}

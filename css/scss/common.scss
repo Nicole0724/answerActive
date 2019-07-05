@@ -1,0 +1,132 @@
+/**************************init*********************************/
+html {
+  height: 100%;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+li {
+  list-style-type: none;
+}
+
+p {
+  margin: 0;
+  padding: 0;
+  outline: none;
+}
+
+textarea {
+  resize: none !important;
+}
+
+table,
+tr,
+th {
+  border: none;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none !important;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+input[type=text]::-ms-clear {
+  display: none
+}
+
+input:-webkit-autofill,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px transparent inset;
+}
+
+input[type=number]:focus,
+input[type=text]:focus,
+input[type=password]:focus,
+textarea:focus {
+  -webkit-box-shadow: 0 0 0 1000px transparent inset;
+  outline: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 16px;
+  background-color: rgba(0, 0, 0, 0.01);
+}
+
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+@import './color.scss';
+@import './layout.scss';
+
+.clearfix {
+  zoom: 1;
+}
+
+.clearfix:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+.m-t-d {
+  margin-top: 1rem;
+}
+
+.m-b-d {
+  margin-bottom: 1rem;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.show {
+  display: block !important;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.border-b-def {
+  border-bottom: 1px solid $borderColor;
+}
+
+.border-t-def {
+  border-top: 1px solid $borderColor;
+}
