@@ -10,8 +10,140 @@
     <!--当屏幕缩放的时候按照1比1缩放-->
     <!--<meta name="viewport" content="width=device-width,initial-scale=1" />-->
     <!--<link rel="shortcut icon" href="../favicon.ico" type="image/x-icon" />-->
-</head>
-<body>
+    <link rel="stylesheet" type="text/css" href="../css/common.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/page_pc.css"/>
 
+    <script type="text/javascript" src="../plugin/jquery-1.11.3.js"></script>
+    <script type="text/javascript" src="../plugin/sixty_utils_browser.js"></script>
+    <script type="text/javascript" src="../plugin/echarts.min.js"></script>
+    <script src="../plugin/Vue.js"></script>
+</head>
+<body id="totalRanking_body">
+<div id="totalRanking">
+    <div class="header row">
+        <div col-6 class="text-left">
+            <img src="../assets/pc_img/logo_left.png">
+        </div>
+        <div col-6 class="text-right">
+            <img src="../assets/pc_img/logo_right.png">
+        </div>
+    </div>
+    <div class="content-right">
+        <div class="ranking-sock">
+            <p class="title">积分排行榜</p>
+            <div class="ranking-box">
+                <table class="rock" cellspacing="0" cellpadding="0">
+                    <tr class="title">
+                        <th class="th1">排名</th>
+                        <th>昵称</th>
+                        <th>所在药店</th>
+                        <th>积分</th>
+                        <th class="th5">用时</th>
+                    </tr>
+                    <tr class="item">
+                        <td class="td1">
+                            <img src="../assets/pc_img/medal_no1.png" alt="第一名">
+                        </td>
+                        <td class="td2">
+                            <img src="../assets/photo.jpg">
+                            <p>王武还款卡快捷键王武还款卡快捷键</p>
+                        </td>
+                        <td class="td3">太挤药店</td>
+                        <td class="td4">1200</td>
+                        <td class="td5">78s</td>
+                    </tr>
+                    <tr class="item">
+                        <td class="td1">
+                            <img src="../assets/pc_img/medal_no2.png" alt="第一名">
+                        </td>
+                        <td class="td2">
+                            <img src="../assets/photo.jpg">李思
+                        </td>
+                        <td class="td3">太挤药店</td>
+                        <td class="td4">1200</td>
+                        <td class="td5">78s</td>
+                    </tr>
+
+                    <tr class="item">
+                        <td class="td1">
+                            <img src="../assets/pc_img/medal_no3.png" alt="第一名">
+                        </td>
+                        <td class="td2">
+                            <img src="../assets/photo.jpg">张闪
+                        </td>
+                        <td class="td3">太挤药店</td>
+                        <td class="td4">1200</td>
+                        <td class="td5">78s</td>
+                    </tr>
+                    <tr class="item">
+                        <td class="td1">
+                            <span>04</span>
+                        </td>
+                        <td class="td2">
+                            <img src="../assets/photo.jpg">Nicole
+                        </td>
+                        <td class="td3">太挤药店</td>
+                        <td class="td4">1200</td>
+                        <td class="td5">78s</td>
+                    </tr>
+                    <tr class="item">
+                        <td class="td1">
+                            <span>04</span>
+                        </td>
+                        <td class="td2">
+                            <img src="../assets/photo.jpg">Nicole
+                        </td>
+                        <td class="td3">太挤药店</td>
+                        <td class="td4">1200</td>
+                        <td class="td5">78s</td>
+                    </tr>
+                    <tr class="item">
+                        <td class="td1">
+                            <span>04</span>
+                        </td>
+                        <td class="td2">
+                            <img src="../assets/photo.jpg">Nicole
+                        </td>
+                        <td class="td3">太挤药店</td>
+                        <td class="td4">1200</td>
+                        <td class="td5">78s</td>
+                    </tr>
+                    <tr class="item">
+                        <td class="td1">
+                            <span>04</span>
+                        </td>
+                        <td class="td2">
+                            <img src="../assets/photo.jpg">Nicole
+                        </td>
+                        <td class="td3">太挤药店</td>
+                        <td class="td4">1200</td>
+                        <td class="td5">78s</td>
+                    </tr>
+                </table>
+                <div class="icon-cup">
+                    <img src="../assets/pc_img/icon_cup.png">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
+<script>
+    new Vue({
+        el: '#totalRanking',
+        data: {
+            name: "宁"
+        },
+        created: function () {
+            // `this` 指向 vm 实例
+            console.log('a is: ' + this.a)
+        },
+        mounted: function () {
+            this.echart();
+        },
+        updated: function () {
+        },
+        methods: {}
+    })
+</script>
 </html>
