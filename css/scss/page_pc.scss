@@ -55,7 +55,7 @@
   .content {
     padding: 37px 56px 0;
     .content-left {
-      width: 1032px;
+      width: 932px;
       float: left;
       .qa-q {
         .qa-q-title {
@@ -69,6 +69,13 @@
           font-weight: 500;
           color: rgba(32, 32, 32, 1);
           line-height: 49px;
+          position: relative;
+          img {
+            position: absolute;
+            top: 32px;
+            left: 32px;
+            width: 48px;
+          }
         }
       }
 
@@ -80,6 +87,7 @@
     .content-right {
       float: right;
       width: 600px;
+      min-height: 600px;
       .ranking-sock {
         p.title {
           text-align: center;
@@ -94,6 +102,7 @@
           padding: 10px;
           background-color: #ffffff;
           position: relative;
+          min-height: 500px;
           .icon-cup {
             width: 80px;
             position: absolute;
@@ -200,6 +209,7 @@
 #totalRanking {
   .content-right {
     width: 600px;
+    min-height: 600px;
     margin: 0 auto;
     .ranking-sock {
       p.title {
@@ -215,6 +225,7 @@
         padding: 10px;
         background-color: #ffffff;
         position: relative;
+        min-height: 500px;
         .icon-cup {
           width: 80px;
           position: absolute;
@@ -226,7 +237,6 @@
         }
         table.rock {
           width: 100%;
-
           tr.title {
             height: 40px;
             background-color: #d81d16;
@@ -313,4 +323,66 @@
       }
     }
   }
+}
+
+#control {
+  p.title {
+    text-align: center;
+    font-size: 28px;
+    color: black;
+    padding: 20px 0;
+  }
+  .all {
+    width: 100%;
+    font-size: 18px;
+    text-align: center;
+
+    a.btn {
+      display: inline-block;
+      width: 300px;
+      padding: 10px 20px;
+      color: #ffffff;
+      cursor: pointer;
+    }
+
+    a.active {
+      background-color: #007CDB;
+    }
+
+    a.now {
+      background-color: #d81d16;
+    }
+    a.end {
+      background-color: #999999;
+    }
+  }
+
+  .qa-list {
+    padding: 20px;
+    p {
+      margin: 15px 15px 0 0;
+      span.s1 {
+        padding-right: 20px;
+      }
+      span.s2 {
+        padding-right: 20px;
+      }
+    }
+    a.single-qa {
+      display: inline-block;
+      text-align: center;
+      width: 150px;
+      padding: 2px 20px;
+      cursor: pointer;
+    }
+
+    a.active, a.default {
+      border: 1px solid #007CDB;
+    }
+
+    a.end {
+      border: 1px solid #999999;
+    }
+  }
+
 }

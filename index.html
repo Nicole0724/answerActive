@@ -13,9 +13,9 @@
     <link rel="stylesheet" type="text/css" href="./css/common.css"/>
     <link rel="stylesheet" type="text/css" href="./css/page_pc.css"/>
 
-    <script type="text/javascript" src="plugin/jquery-1.11.3.js"></script>
-    <script type="text/javascript" src="plugin/sixty_utils_browser.js"></script>
     <script src="plugin/Vue.js"></script>
+    <script src="plugin/axios.min.js"></script>
+    <script src="providers/config.js"></script>
 
 </head>
 <body id="index_body">
@@ -37,8 +37,35 @@
 <script>
     new Vue({
         el: '#index',
-        data: {
-            name: "宁"
+        data: {},
+        mounted: function () {
+            this.loopIsAction();
+        },
+        methods: {
+            loopIsAction() {
+                axios({
+                    method: 'post',
+                    url: 'item/back/johnson/answer/switch/get/switchStatus',
+                    params: {
+                        periodId: 1
+                    }
+                }).then((res) => {
+                    console.log("控制页面==>" + JSON.stringify(res.data));
+                    if (res.data.code == 0) {
+                        if (res.data.data.switchStatusInfo == 2) {
+                            window.location.href = "page/singleRanking.html";
+                        } else if (res.data.data.switchStatusInfo == 3) {
+                            window.location.href = "page/totalRanking.html";
+                        } else {
+                            setTimeout(() => {
+                                this.loopIsAction()
+                            }, 2000);
+                        }
+                    }
+                }).catch((err) => {
+                    alert("未知异常,请联系管理员");
+                })
+            }
         }
     })
 </script>

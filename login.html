@@ -18,9 +18,13 @@
     <link rel="stylesheet" type="text/css" href="./css/page_m.css"/>
 
     <script type="text/javascript" src="plugin/jquery-1.11.3.js"></script>
+    <script type="text/javascript" src="plugin/jweixin-1.4.0.js"></script>
     <script type="text/javascript" src="plugin/sixty_utils_browser.js"></script>
     <script type="text/javascript" src="plugin/reset_fontsize_m.js"></script>
     <script src="plugin/Vue.js"></script>
+    <script src="plugin/axios.min.js"></script>
+    <script src="providers/config.js"></script>
+    <script src="providers/wx.js"></script>
 </head>
 <body id="login_body">
 <div id="login">
@@ -39,28 +43,153 @@
         <div class="input-owner row">
             <div class="lable-title" col-4 align-self-center>姓名</div>
             <div class="input-text" col-8 align-self-center>
-                <input type="text" placeholder="点击输入">
+                <input type="text" placeholder="点击输入" v-model="name">
             </div>
         </div>
         <div class="input-owner row">
             <div class="lable-title" col-4 align-self-center>所在药店</div>
             <div class="input-text" col-8 align-self-center>
-                <input type="text" placeholder="点击输入">
+                <input type="text" placeholder="点击输入" v-model="drugstoreName">
             </div>
         </div>
         <div class="btn-box">
-            <div class="btn-save">提交</div>
+            <div class="btn-save" @click="save">提交</div>
         </div>
     </div>
+
+    <div class="mask" v-if="switchStatus==1">
+        <div class="alert">
+            <div class="alert-body">
+                <p class="p1">别眨眼，马上开始！</p>
+            </div>
+            <div class="alert-btn alert-end" v-if="switchStatus==1">即将开始答题</div>
+            <!--<div class="alert-btn alert-end" v-if="switchStatus==2" @click="next()">开始答题</div>-->
+        </div>
+    </div>
+
+    <div class="mask" v-if="switchStatus==3">
+        <div class="alert">
+            <div class="alert-body">
+                <p class="p1">很抱歉，活动已结束！</p>
+            </div>
+            <div class="alert-btn alert-next" @click="close()">知道了</div>
+        </div>
+    </div>
+
 </div>
 </body>
 
 <script>
-    new Vue({
-        el: '#login',
-        data: {
-            name: "宁"
-        }
+    $(function () {
+        new Vue({
+            el: '#login',
+            data: {
+                switchStatus: 0,
+                openid: "18380479234",
+                name: "",
+                drugstoreName: "",
+                code: "455",
+                periodId: 1
+            },
+            mounted: function () {
+                wxConfig();
+            },
+            methods: {
+                getWxUserInfo: function () {
+                    axios({
+                        method: 'post',
+                        url: 'item/back/Johnson/weChat/user/code/userInfo',
+                        params: {
+                            code: this.code
+                        }
+                    }).then((res) => {
+                        /*返回用户信息以及openid*/
+
+                    });
+                },
+                save: function () {
+                    console.log(this.name, this.drugstoreName);
+                    if (this.openid.trim() == "") {
+                        alert("暂未授权");
+                        return false;
+                    }
+                    if (this.name.trim() == "") {
+                        alert("姓名不能为空");
+                        return false;
+                    }
+                    if (this.drugstoreName.trim() == "") {
+                        alert("所在药店不能为空");
+                        return false;
+                    }
+
+                    // Send a POST request
+                    axios({
+                        method: 'post',
+                        url: 'item/back/johnson/user/save',
+                        params: {
+                            openid: this.openid,
+                            drugstoreName: this.drugstoreName,
+                            name: this.name,
+                            periodId: this.periodId,
+                        }
+                    }).then((res) => {
+                        localStorage.setItem("openid", '18380479234');
+                        if (res.data.code == 0) {
+                            this.switchStatus = res.data.data;
+                            if (res.data.data == 1) {
+                                this.getQusStatus();
+                            } else if (res.data.data == 2) {
+                                this.next();
+                            }
+                        }
+                    });
+
+                },
+                /**
+                 * 获取当前活动的状态
+                 * @param status
+                 * @returns {boolean}
+                 */
+                getQusStatus: function () {
+                    axios({
+                        method: 'post',
+                        url: 'item/back/johnson/answer/switch/get/switchStatus',
+                        params: {
+                            periodId: this.periodId
+                        }
+                    }).then((res) => {
+                        if (res.data.code == 0) {
+                            if (res.data.data.switchStatusInfo == 1) {
+                                setTimeout(() => {
+                                    this.switchStatus = 1;
+                                    this.getQusStatus();
+                                }, 2000);
+                            } else if (res.data.data.switchStatusInfo == 2) {
+                                if (res.data.data.hasOwnProperty("currentAnswerQuestionInfo") && res.data.data.currentAnswerQuestionInfo != null) {
+                                    this.switchStatus = 2;
+                                    this.next();
+                                } else {
+                                    setTimeout(() => {
+                                        this.getQusStatus();
+                                    }, 2000);
+                                }
+                            } else {
+                                this.switchStatus = 3;
+                            }
+                        } else {
+                            alert(res.data.message);
+                        }
+                    })
+                },
+                close: function () {
+                    this.switchStatus = 0;
+                },
+                next: function () {
+                    window.location.href = "page/qa.html"
+                }
+
+            }
+        })
     })
 </script>
 </html>

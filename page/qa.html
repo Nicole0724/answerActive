@@ -21,6 +21,9 @@
     <script type="text/javascript" src="../plugin/sixty_utils_browser.js"></script>
     <script type="text/javascript" src="../plugin/reset_fontsize_m.js"></script>
     <script src="../plugin/Vue.js"></script>
+    <script src="../plugin/axios.min.js"></script>
+    <script src="../providers/config.js"></script>
+
 </head>
 <body>
 <body id="qa_body">
@@ -33,30 +36,75 @@
             <img src="../assets/mobile_img/logo_right.png">
         </div>
     </div>
-    <div class="qa-title"> 第一题(单选)</div>
+    <div class="qa-title">
+        {{qaInfo.questionInfo?qaInfo.questionInfo.title:''}}
+    </div>
     <div class="qa-q">
         <div class="qa-q-title">
-            雷诺考特的酯化作用以下说法正确的是
+            {{qaInfo.questionInfo?qaInfo.questionInfo.name:''}}
         </div>
-        <div class="qa-ans-item color-true">A. 布地奈德在细胞中并非一次性全部结合受体而是部分转化为无活性布地奈德酯化物</div>
-        <div class="qa-ans-item color-pink">B. 药物在鼻腔滞留的时间长</div>
-        <div class="qa-ans-item color-pink">C. 持续抑制炎症反应</div>
-        <div class="qa-ans-item color-false">D. 以上说法均正确</div>
-    </div>
-    <div class="btn-box">
-        <div class="btn-save">提交</div>
-    </div>
-</div>
-<div class="mask">
-    <div class="alert">
-        <div class="alert-body">
-            <p class="p1"> 恭喜您答对了！</p>
-            <p class="p1">目前您的积分为：50 分</p>
-            <p class="p1"> 目前您的排名为：14 名 </p>
+        <div class="qa-ans-item color-pink"
+             v-for="(item,index) in qaInfo.questionInfo.answerListInfo"
+             @click="chooseAns(item)" :class="[{'color-true':item.isChoose==true}]">
+            {{index==0?'A.':(index==1?'B.':(index==2?'C.':'D.'))}} {{item.name}}
         </div>
-        <!--<div class="alert-btn alert-next">下一题</div>-->
-        <div class="alert-btn alert-end">结束答题</div>
     </div>
+    <div class="btn-box" v-if="qaInfo.questionInfo">
+        <div class="btn-save" @click="save()">提交</div>
+    </div>
+
+
+    <div class="mask" v-if="nowIsAction==1">
+        <div class="alert">
+            <div class="alert-body">
+                <p class="p1">别眨眼，马上开始！</p>
+            </div>
+            <div class="alert-btn alert-end">即将开始答题</div>
+        </div>
+    </div>
+
+
+    <div class="mask" v-if="nowIsAction==2">
+        <div class="alert">
+            <div class="alert-body">
+                <p class="p1"> {{correct==1?'恭喜您答对了！':"很抱歉您答错了！"}}</p>
+                <p class="p1">目前您的积分为：{{rankInfo.integral}} 分</p>
+                <p class="p1"> 目前您的排名为：{{rankInfo.rank}} 名 </p>
+            </div>
+            <div class="alert-btn alert-end" v-if="nowIsAction==2&&nowCurAction==1">下一题</div>
+            <div class="alert-btn alert-next" v-if="nowIsAction==2&&nowCurAction==2"
+                 @click="getCurrentQa('next')">下一题
+            </div>
+        </div>
+    </div>
+
+    <div class="mask" v-if="nowIsAction==3">
+        <div class="alert">
+            <div class="alert-body">
+                <p class="p1"> {{correct==1?'恭喜您答对了！':"很抱歉您答错了！"}}</p>
+                <p class="p1">目前您的积分为：{{rankInfo.integral}} 分</p>
+                <p class="p1"> 目前您的排名为：{{rankInfo.rank}} 名 </p>
+            </div>
+            <div class="alert-btn alert-end" v-if="nowIsAction==3">结束答题</div>
+        </div>
+    </div>
+
+    <div class="mask" v-if="nowIsAction==4">
+        <div class="alert">
+            <div class="alert-body">
+                <p class="p1"> {{code.msg}}</p>
+                <p class="p1">目前您的积分为：{{rankInfo.integral}} 分</p>
+                <p class="p1"> 目前您的排名为：{{rankInfo.rank}} 名 </p>
+            </div>
+            <div class="alert-btn alert-end" v-if="code.code==(-1)">结束答题</div>
+            <div class="alert-btn alert-next" v-if="code.code==(-2)" @click="getCurrentQa('next')">
+                下一题
+            </div>
+            <div class="alert-btn alert-end" v-if="code.code==(-3)&&nowCurAction!=2" @click="getCurrentQa('next')">下一题</div>
+            <div class="alert-btn alert-next" v-if="code.code==(-3)&&nowCurAction==2" @click="getCurrentQa('next')">下一题</div>
+        </div>
+    </div>
+
 </div>
 </body>
 
@@ -64,7 +112,194 @@
     new Vue({
         el: '#qa',
         data: {
-            name: "宁"
+            maskIsShow: false,
+            periodId: 1,
+            nowIsAction: 0, //当前是否开始 1未开始 2进行中 3已结束
+            nowCurAction: 0,//1 当前题  2 下一题
+            qaInfo: {
+                questionInfo: {
+                    answerListInfo: []
+                }
+            },
+            correct: 0,//当前答题是否正确
+            code: {
+                code: 0,
+                msg: ''
+            },// -1 平台答题结束，-2当前题目答题结束,已经开始下一题答题 -3当前题目答题结束,未开始下一题
+            rankInfo: { //目前排名
+                rank: 0,
+                integral: 0
+            },
+            userInfo: {
+                openid: 1,
+            },
+            johnsonQuestionAnswerId: []//选项ID
+        },
+        mounted: function () {
+            this.userInfo.openid = localStorage.getItem("openid");
+            this.getCurrentQa();
+        },
+        methods: {
+            /*
+            * 获取当前题目的状态
+            * */
+            getQusStatus: function (status) {
+
+                if (!this.qaInfo.hasOwnProperty("questionInfo")) {
+                    return false;
+                }
+                axios({
+                    method: 'post',
+                    url: 'item/back/johnson/question/answer/switch/get/switchStatus',
+                    params: {
+                        periodId: this.qaInfo.questionInfo.period_id,
+                        johnsonQuestionId: this.qaInfo.questionInfo.id,
+                    }
+                }).then((res) => {
+
+                })
+            },
+
+            getCurrentQa: function (status) {
+
+                if (status == "next") {
+                    this.nowIsAction = 0;
+                }
+
+                axios({
+                    method: 'post',
+                    url: 'item/back/johnson/question/get/m/current/question',
+                    params: {
+                        periodId: this.periodId
+                    }
+                }).then((res) => {
+                    console.log("获取当前答题题目" + res.data);
+                    if (res.data.code == 0) {
+                        if (res.data.data == null || res.data.data.hasOwnProperty("questionInfo") == false) {
+                            this.nowIsAction = 1;
+                            setTimeout(function () {
+                                this.getCurrentQa();
+                            }, 2000);
+                        } else {
+                            res.data.data.questionInfo.answerListInfo.map((item) => {
+                                item["isChoose"] = false;
+                            });
+                            this.qaInfo = res.data.data;
+                        }
+                    } else {
+                        alert(res.data.message)
+                    }
+                });
+            },
+            /**
+             *  选择答案
+             * @param _item
+             * @returns {boolean}
+             */
+            chooseAns: function (_item) {
+
+                if (!this.qaInfo.hasOwnProperty("questionInfo")) {
+                    return false;
+                }
+
+                if (!this.qaInfo.questionInfo.hasOwnProperty("answerListInfo")) {
+                    return false;
+                }
+
+                if (this.qaInfo.questionInfo.multi_select == 2) {
+                    this.qaInfo.questionInfo.answerListInfo.map((item) => {
+                        item["isChoose"] = false;
+                        if (_item.id == item.id) {
+                            item.isChoose = true;
+                        }
+                    });
+                } else {
+                    this.qaInfo.questionInfo.answerListInfo.map((item) => {
+                        if (_item.id == item.id) {
+                            item.isChoose = !_item.isChoose;
+                        }
+                    });
+                }
+
+            },
+            /**
+             *
+             */
+            save: function () {
+                this.johnsonQuestionAnswerId = [];
+                this.qaInfo.questionInfo.answerListInfo.map((item) => {
+                    if (item.isChoose) {
+                        this.johnsonQuestionAnswerId.push(item.id);
+                    }
+                });
+
+                var outPut = {
+                    openid: this.userInfo.openid,
+                    johnsonQuestionId: this.qaInfo.questionInfo.id,
+                    periodId: this.qaInfo.questionInfo.period_id,
+                    johnsonQuestionAnswerId: this.johnsonQuestionAnswerId.join(',')
+                }
+
+                axios({
+                    method: 'post',
+                    url: 'item/back/johnson/answer/record/save',
+                    params: outPut
+                }).then((res) => {
+                    if (res.data.code == 0) {
+                        this.getIntegral();
+                        this.nowIsAction = 2;
+                        this.correct = res.data.data.correct;
+                    } else if (res.data.code == (-1)) {
+                        this.getIntegral();
+                        this.nowIsAction = 4;
+                        this.code.code = res.data.code;
+                        this.code.msg = res.data.message;
+                    } else if (res.data.code == (-2)) {
+                        this.getIntegral();
+                        this.nowIsAction = 4;
+                        this.code.code = res.data.code;
+                        this.code.msg = res.data.message;
+                    } else if (res.data.code == (-3)) {
+                        this.getIntegral();
+                        this.nowIsAction = 4;
+                        this.code.code = res.data.code;
+                        this.code.msg = res.data.message;
+                    } else {
+                        alert(res.data.message);
+                    }
+                })
+            },
+            getIntegral: function () {
+                axios({
+                    method: 'post',
+                    url: 'item/back/johnson/user/total/integral/get',
+                    params: {
+                        openid: this.userInfo.openid,
+                        periodId: this.qaInfo.questionInfo.period_id,
+                    }
+                }).then((res) => {
+                    if (res.data.code == 0) {
+                        this.rankInfo = res.data.data.rankInfo;
+                        if (res.data.data.answerSwitchInfo == 3) {
+                            this.nowIsAction = 3;
+                        }
+                        if (this.qaInfo.questionInfo.period_id == res.data.data.currentQuestionInfo.period_id) {
+                            if (this.qaInfo.questionInfo.id == res.data.data.currentQuestionInfo.johnson_question_id) {
+                                this.nowCurAction = 1;
+                                setTimeout(() => {
+                                    this.getIntegral();
+                                }, 2000)
+                            } else {
+                                this.nowCurAction = 2;
+                            }
+                        }
+                    } else {
+                        alert(res.data.message);
+                    }
+                })
+            }
+
+
         }
     })
 </script>

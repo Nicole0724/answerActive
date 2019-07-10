@@ -13,11 +13,134 @@
     <link rel="stylesheet" type="text/css" href="./css/common.css"/>
     <link rel="stylesheet" type="text/css" href="./css/page_pc.css"/>
 
-    <script type="text/javascript" src="plugin/jquery-1.11.3.js"></script>
-    <script type="text/javascript" src="plugin/sixty_utils_browser.js"></script>
+    <!--<script type="text/javascript" src="plugin/jquery-1.11.3.js"></script>-->
     <script src="plugin/Vue.js"></script>
-</head>
-<body>
+    <script src="plugin/axios.min.js"></script>
+    <script src="providers/config.js"></script>
 
+</head>
+<body id="control-body">
+<div id="control">
+    <p class="title">西安杨森比赛</p>
+    <div class="all">
+        <a v-if="switchStatus==1" class="btn"
+           :class="[{ active: switchStatus==1, now: switchStatus==2 ,end:switchStatus==3}]"
+           @click="setNowPeriodStatus(2)">未开始答题</a>
+
+        <a v-if="switchStatus==2" class="btn"
+           :class="[{ active: switchStatus==1, now: switchStatus==2 ,end:switchStatus==3}]"
+           @click="setNowPeriodStatus(3)">答题进行中</a>
+
+        <a v-if="switchStatus==3" class="btn"
+           :class="[{ active: switchStatus==1, now: switchStatus==2 ,end:switchStatus==3}]"
+           @click="setNowPeriodStatus(1)">答题已结束</a>
+    </div>
+    <div class="qa-list">
+        <p v-for="item in allQasList">
+            <a class="single-qa active"
+               :class="[{default:item.switch_status==1,active:item.switch_status==2,end:item.switch_status==3}]"
+               @click="setNowQusSwitchStatus(item)">{{item.switch_status==1?"未开始":(item.switch_status==2?"进行中":"已结束")}}{{item.id}}某题</a>
+            <!--<span class="s1">第{{item.id}}题</span>-->
+            <span class="s2">{{item.name}}</span>
+
+        </p>
+    </div>
+</div>
 </body>
+<script>
+    new Vue({
+        el: '#control',
+        data: function () {
+            return {
+                switchStatus: 0,
+                allQasList: [{id: 1, status: 1}, {id: 2, status: 2}]
+            }
+        },
+        mounted: function () {
+            this.checkNowPeriod();
+            this.getQusAll();
+        },
+        methods: {
+            checkNowPeriod() {
+                axios({
+                    method: 'post',
+                    url: 'item/back/johnson/answer/switch/get/switchStatus',
+                    params: {
+                        periodId: 1
+                    }
+                }).then((res) => {
+                    console.log("控制页面==>" + JSON.stringify(res.data));
+                    if (res.data.code == 0) {
+                        this.switchStatus = res.data.data.switchStatusInfo;
+
+                    } else {
+                        alert(res.data.message);
+                    }
+                }).catch((erro) => {
+                    alert("获取当期题失败")
+                });
+            },
+            //switchStatus ==1 为开 2 为关
+            setNowPeriodStatus(inp) {
+                const that = this;
+                axios({
+                    method: 'post',
+                    url: 'item/back/johnson/answer/switch/update/switchStatus',
+                    params: {
+                        periodId: 1,
+                        switchStatus: inp
+                    }
+                }).then((res) => {
+                    console.log("控制页面==>" + JSON.stringify(res.data));
+                    if (res.data.code == 0) {
+                        that.switchStatus = inp;
+                    } else {
+                        alert(res.data.message);
+                    }
+
+                });
+            },
+            getQusAll() {
+                axios({
+                    method: 'post',
+                    url: 'item/back/johnson/question/get/all',
+                    params: {
+                        periodId: 1,
+                    }
+                }).then((res) => {
+                    console.log("控制页面==获取问题列表====>" + JSON.stringify(res.data));
+                    this.allQasList = res.data.data;
+                });
+            },
+            setNowQusSwitchStatus(item) {
+
+                let outPut = {
+                    johnsonQuestionId: item.id,
+                    periodId: item.period_id,
+                    switchStatus: item.switch_status == 1 ? 2 : (item.switch_status == 2 ? 3 : 1)
+                }
+
+                axios({
+                    method: 'post',
+                    url: 'item/back/johnson/question/answer/switch/update/switchStatus',
+                    params: outPut,
+                    headers: {
+                        Accept: "*/*",
+                        "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+                    }
+                }).then((res) => {
+                    console.log("控制页面==单道题的开关====>" + JSON.stringify(res.data));
+                    if (res.data.code == 0) {
+                        this.getQusAll();
+                    } else {
+                        alert(res.data.message);
+                    }
+                });
+
+            }
+
+
+        },
+    })
+</script>
 </html>

@@ -113,11 +113,11 @@
     }
     .color-true {
       color: #ffffff;
-      background: linear-gradient(90deg, rgba(162, 173, 34, 1), rgba(3, 132, 7, 1));
+      background: linear-gradient(90deg, rgba(162, 173, 34, 1), rgba(3, 132, 7, 1)) !important;
     }
     .color-false {
       color: #ffffff;
-      background: linear-gradient(90deg, rgba(230, 48, 62, 1), rgba(236, 71, 3, 1));
+      background: linear-gradient(90deg, rgba(230, 48, 62, 1), rgba(236, 71, 3, 1)) !important;
     }
   }
 }
@@ -142,6 +142,7 @@
     .alert-body {
       padding-top: 13rem;
       padding-bottom: 2rem;
+      min-height: 20rem;
       p {
         text-align: center;
         font-size: 1.6rem;
