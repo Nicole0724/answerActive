@@ -24,6 +24,7 @@
 </head>
 <body id="singleRanking_body">
 <div id="singleRanking">
+
     <!--  <div class="header row">
           <div col-6 class="text-left">
               <img src="../assets/pc_img/logo_left.png">
@@ -36,8 +37,8 @@
     <div class="content clearfix">
         <div class="content-left">
             <div class="qa-q">
-                <div class="qa-q-title">{{questionInfo.id}}.
-                    {{questionInfo.name}}（{{questionInfo.multi_select==2?"单选":"多选"}}）
+                <div class="qa-q-title">
+                    {{questionInfo.id}}.{{questionInfo.name}}（{{questionInfo.multi_select==2?"单选":"多选"}}）
                 </div>
                 <div class="qa-ans-item" v-for="(item,index) in questionInfo.answerListInfo">
                     <img v-if="questionAnswerSwitchInfo==3&&item.correct==1" src="../assets/pc_img/icon_choose.png">
@@ -69,8 +70,8 @@
                             </td>
                             <td class="td2">
                                 <img :src="item.headimgurl">
-                                <span v-if="item.name.length<=8">{{item.name}}</span>
-                                <p v-if="item.name.length>8">{{item.name}}</p>
+                                <span v-if="item.name&&item.name.length<=8">{{item.name}}</span>
+                                <p v-if="item.name&&item.name.length>8">{{item.name}}</p>
                             </td>
                             <td class="td3">{{item.drugstore_name}}</td>
                             <td class="td4">{{item.integral}}</td>
@@ -100,15 +101,50 @@
                 errorCount: 0
             },
             questionInfo: {},
-            rankList: []
+            rankList: [
+                {
+                    name: "",
+                    drugstore_name: '',
+                    integral: 0,
+                    answer_time: 0
+                }, {
+                    name: "",
+                    drugstore_name: '',
+                    integral: 0,
+                    answer_time: 0
+                }, {
+                    name: "",
+                    drugstore_name: '',
+                    integral: 0,
+                    answer_time: 0
+                }, {
+                    name: "",
+                    drugstore_name: '',
+                    integral: 0,
+                    answer_time: 0
+                }, {
+                    name: "",
+                    drugstore_name: '',
+                    integral: 0,
+                    answer_time: 0
+                }, {
+                    name: "",
+                    drugstore_name: '',
+                    integral: 0,
+                    answer_time: 0
+                }, {
+                    name: "",
+                    drugstore_name: '',
+                    integral: 0,
+                    answer_time: 0
+                }]
         },
         mounted: function () {
             this.getCurrentIntegral();
         },
-        updated: function () {
-        },
         methods: {
             getCurrentIntegral() {
+                var _Self = this;
                 axios({
                     method: 'post',
                     url: 'item/back/johnson/question/get/current/question',
@@ -117,7 +153,6 @@
                     }
                 }).then((res) => {
                     if (res.data.code == 0) {
-
                         if (res.data.data.answerSwitchInfo == 3) {
                             window.location.href = "totalRanking.html";
                             return false;
@@ -127,9 +162,9 @@
                             this.rankList = res.data.data.rankList;
                             this.questionAnswerSwitchInfo = res.data.data.questionAnswerSwitchInfo;
                             this.echart();
-                            setTimeout(() => {
-                                this.getCurrentIntegral();
-                            }, 2000);
+                            /*  setTimeout(() => {
+                                  this.getCurrentIntegral();
+                              }, 500);*/
                         }
                     } else {
                         alert(res.data.message);

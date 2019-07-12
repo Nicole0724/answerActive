@@ -19,37 +19,75 @@
     <script src="providers/config.js"></script>
 
 </head>
-<body id="control-body">
-<div id="control">
+<body id="control-table-body">
+<div id="control-table">
     <p class="title">西安杨森比赛</p>
-    <div class="all">
-        <a v-if="switchStatus==1" class="btn"
+    <div class="all clearfix">
+        <a v-if="switchStatus==1" class="btn-start"
            :class="[{ active: switchStatus==1, now: switchStatus==2 ,end:switchStatus==3}]"
            @click="setNowPeriodStatus(2)">未开始答题</a>
 
-        <a v-if="switchStatus==2" class="btn"
+        <a v-if="switchStatus==2" class="btn-start"
            :class="[{ active: switchStatus==1, now: switchStatus==2 ,end:switchStatus==3}]"
            @click="setNowPeriodStatus(3)">答题进行中</a>
 
-        <a v-if="switchStatus==3" class="btn"
-           :class="[{ active: switchStatus==1, now: switchStatus==2 ,end:switchStatus==3}]"
-           @click="setNowPeriodStatus(1)">答题已结束</a>
-    </div>
-    <div class="qa-list">
-        <p v-for="item in allQasList">
-            <a class="single-qa active"
-               :class="[{default:item.switch_status==1,active:item.switch_status==2,end:item.switch_status==3}]"
-               @click="setNowQusSwitchStatus(item)">{{item.switch_status==1?"未开始":(item.switch_status==2?"进行中":"已结束")}}{{item.id}}某题</a>
-            <!--<span class="s1">第{{item.id}}题</span>-->
-            <span class="s2">{{item.name}}</span>
+        <a v-if="switchStatus==3" class="btn-start"
+           :class="[{ active: switchStatus==1, now: switchStatus==2 ,end:switchStatus==3}]">答题已结束</a>
 
-        </p>
+
+        <a class="btn-clean" @click="setNowPeriodClean()">重置活动</a>
+        <!--<a class="btn-clean" @click="setNowPeriodStatus(1)">重置活动</a>-->
+
     </div>
+
+
+    <!--   <div class="qa-list">
+           <p v-for="item in allQasList">
+               <a class="single-qa"
+                  :class="[{default:item.switch_status==1,active:item.switch_status==2,end:item.switch_status==3}]"
+                  @click="setNowQusSwitchStatus(item)">{{item.switch_status==1?"未开始":(item.switch_status==2?"进行中":"已结束")}}{{item.id}}某题</a>
+               &lt;!&ndash;<span class="s1">第{{item.id}}题</span>&ndash;&gt;
+               <span class="s2">{{item.name}}</span>
+
+           </p>
+       </div>
+
+       <div class="clean">
+           <a class="btn" @click="setNowPeriodStatus(2)">重置活动</a>
+       </div>-->
+
+    <div class="qa-list">
+        <table>
+            <tr>
+                <th width="100px">题号</th>
+                <th>题目</th>
+                <th width="100px">当前状态</th>
+                <th width="200px">操作</th>
+            </tr>
+            <tr v-for="item in allQasList">
+                <td>{{item.id}}</td>
+                <td>{{item.name}}</td>
+                <td>
+                    <span class="mark"
+                          :class="[{default:item.switch_status==1,active:item.switch_status==2,end:item.switch_status==3}]">{{item.switch_status==1?"未开始":(item.switch_status==2?"进行中":"已结束")}}</span>
+                </td>
+                <td>
+                    <a @click="setNowQusSwitchStatus(item,'start')">开始</a>
+                    <a @click="setNowQusSwitchStatus(item,'end')">结束</a>
+                </td>
+            </tr>
+        </table>
+
+
+    </div>
+
+
 </div>
 </body>
+
 <script>
     new Vue({
-        el: '#control',
+        el: '#control-table',
         data: function () {
             return {
                 switchStatus: 0,
@@ -112,12 +150,12 @@
                     this.allQasList = res.data.data;
                 });
             },
-            setNowQusSwitchStatus(item) {
+            setNowQusSwitchStatus(item, status) {
 
                 let outPut = {
                     johnsonQuestionId: item.id,
                     periodId: item.period_id,
-                    switchStatus: item.switch_status == 1 ? 2 : (item.switch_status == 2 ? 3 : 1)
+                    switchStatus: status == 'start' ? 2 : 3
                 }
 
                 axios({
@@ -137,8 +175,22 @@
                     }
                 });
 
+            },
+            setNowPeriodClean() {
+                axios({
+                    method: 'get',
+                    url: '/item/back/johnson/clear/data',
+                }).then((res) => {
+                    console.log("控制页面==单道题的开关====>" + JSON.stringify(res.data));
+                    if (res.data.code == 0) {
+                        alert("重置成功");
+                        this.checkNowPeriod();
+                        this.getQusAll();
+                    } else {
+                        alert(res.data.message);
+                    }
+                });
             }
-
 
         },
     })

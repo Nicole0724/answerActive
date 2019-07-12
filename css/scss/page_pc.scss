@@ -352,9 +352,27 @@
     a.now {
       background-color: #d81d16;
     }
+
     a.end {
       background-color: #999999;
     }
+  }
+  .clean {
+    width: 100%;
+    font-size: 18px;
+    text-align: right;
+
+    a.btn {
+      display: inline-block;
+      width: 300px;
+      padding: 10px 20px;
+      color: #ffffff;
+      cursor: pointer;
+      text-align: center;
+      background-color: #d81d16;
+      margin-right: 100px;
+    }
+
   }
 
   .qa-list {
@@ -375,6 +393,7 @@
       padding: 2px 20px;
       cursor: pointer;
     }
+    /*
 
     a.active, a.default {
       border: 1px solid #007CDB;
@@ -382,6 +401,127 @@
 
     a.end {
       border: 1px solid #999999;
+    }
+    */
+
+    a.active {
+      border: 1px solid #d81d16;
+      color: #d81d16;
+    }
+
+    a.default {
+      border: 1px solid #007CDB;
+      color: #007CDB;
+    }
+
+    a.end {
+      border: 1px solid #999999;
+      color: #999999;
+
+    }
+
+  }
+
+}
+
+#control-table {
+  p.title {
+    text-align: center;
+    font-size: 28px;
+    color: black;
+    padding: 20px 0;
+  }
+  .all {
+    width: 1200px;
+    font-size: 18px;
+    text-align: center;
+    padding-bottom: 40px;
+    margin: 0 auto;
+
+    a.btn-start {
+      display: inline-block;
+      width: 300px;
+      padding: 10px 20px;
+      color: #ffffff;
+      cursor: pointer;
+      float: left;
+    }
+    a.active {
+      background-color: #007CDB;
+    }
+
+    a.now {
+      background-color: #038407;
+    }
+
+    a.end {
+      background-color: #999999;
+    }
+  }
+  .btn-clean {
+    display: inline-block;
+    width: 200px;
+    padding: 10px 20px;
+    color: #ffffff;
+    cursor: pointer;
+    text-align: center;
+    background-color: #d81d16;
+    float: right;
+  }
+  .qa-list {
+    width: 1200px;
+    margin: 0 auto;
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      //border: 1px solid #999999;
+      tr {
+        height: 50px;
+        th {
+          border: 1px solid #999999;
+        }
+        td {
+          border: 1px solid #999999;
+          &:first-child {
+            text-align: center;
+          }
+          &:nth-child(2) {
+            text-align: left;
+            padding-left: 10px;
+          }
+          &:nth-child(3) {
+            text-align: center;
+          }
+          &:nth-child(4) {
+            text-align: center;
+          }
+
+          a {
+            display: inline-block;
+            padding: 4px 20px;
+            color: #ffffff;
+            background-color: #007CDB;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+
+    .mark {
+      display: inline-block;
+      padding: 4px 10px;
+      color: #ffffff;
+      border-radius: 10px;
+    }
+    .active {
+      background-color: #038407;
+    }
+    .default {
+      background-color: #007CDB;
+    }
+    .end {
+      background-color: #999999;
     }
   }
 

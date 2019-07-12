@@ -43,13 +43,13 @@
         <div class="input-owner row">
             <div class="lable-title" col-4 align-self-center>姓名</div>
             <div class="input-text" col-8 align-self-center>
-                <input type="text" placeholder="点击输入" v-model="name">
+                <input type="text" placeholder="点击输入" v-model="name" @blur="viewDefault">
             </div>
         </div>
         <div class="input-owner row">
             <div class="lable-title" col-4 align-self-center>所在药店</div>
             <div class="input-text" col-8 align-self-center>
-                <input type="text" placeholder="点击输入" v-model="drugstoreName">
+                <input type="text" placeholder="点击输入" v-model="drugstoreName" @blur="viewDefault">
             </div>
         </div>
         <div class="btn-box">
@@ -85,16 +85,36 @@
             el: '#login',
             data: {
                 switchStatus: 0,
-                openid: "18380479234",
+                openid: "",
                 name: "",
                 drugstoreName: "",
-                code: "455",
+                code: "",
                 periodId: 1
             },
             mounted: function () {
-                wxConfig();
+                this.openid = localStorage.getItem("openid");
+                this.getCode();
             },
             methods: {
+                viewDefault: function () {
+                    document.body.scrollTop = 0;
+                    document.documentElement.scrollTop = 0;
+                },
+                getWeixinCode: function () {
+                    var res = 'http://h5.mind-node.com/johnson/login.html';
+                    window.location.replace('https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx860b2798a9a30ee4&redirect_uri=' + res + '&response_type=code&scope=snsapi_userinfo&state=aa#wechat_redirect');
+                },
+                getCode: function () {
+                    var code = Sixty.utils.QueryString("code");
+                    if (code == undefined && localStorage.getItem("openid") == undefined) {
+                        this.getWeixinCode();
+                    } else {
+                        this.code = code;
+                        if (code != undefined) {
+                            this.getWxUserInfo();
+                        }
+                    }
+                },
                 getWxUserInfo: function () {
                     axios({
                         method: 'post',
@@ -104,7 +124,11 @@
                         }
                     }).then((res) => {
                         /*返回用户信息以及openid*/
-
+                        if (res.data.code == 0) {
+                            var userInfo = JSON.parse(res.data.data.userInfo);
+                            this.openid = userInfo.openid;
+                            localStorage.setItem("openid", userInfo.openid);
+                        }
                     });
                 },
                 save: function () {
